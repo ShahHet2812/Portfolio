@@ -3,7 +3,6 @@ import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { Mail, Phone, MapPin, Github, Linkedin, Twitter, Send } from "lucide-react";
 import axios from 'axios';
 
-
 interface FormData {
   name: string;
   email: string;
