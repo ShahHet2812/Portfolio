@@ -72,7 +72,7 @@ const Hackathons: React.FC = () => {
                   </Col>
                   <Col md={8}>
                     <Card.Body className="h-100 d-flex flex-column">
-                      <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start mb-3">
+                      <div className="d-flex justify-content-between align-items-start mb-3">
                         <h4
                           className="fw-bold mb-0"
                           style={{
@@ -84,7 +84,7 @@ const Hackathons: React.FC = () => {
                         >
                           {hackathon.title}
                         </h4>
-                        <Badge className="achievement-badge mt-2 mt-sm-0 text-wrap">
+                        <Badge className="achievement-badge">
                           <Trophy size={14} className="me-1" />
                           {hackathon.achievement}
                         </Badge>
@@ -187,7 +187,6 @@ const Hackathons: React.FC = () => {
             border-radius: 12px;
             font-size: 0.8rem;
             box-shadow: 0 0 10px rgba(0, 230, 255, 0.6);
-            white-space: normal; /* Ensures text wraps */
           }
 
           .tech-badge {
