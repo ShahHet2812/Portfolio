@@ -38,7 +38,7 @@ const Contact: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-        await axios.post('http://localhost:5000/contact/add', formData);
+        await axios.post(`${import.meta.env.VITE_API_URL}/contact/add`, formData);
         setAlertVariant("success");
         setAlertMessage("Thank you for your message! I'll get back to you soon.");
         setFormData({ name: "", email: "", message: "" });

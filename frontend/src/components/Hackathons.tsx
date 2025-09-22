@@ -21,7 +21,7 @@ const Hackathons: React.FC = () => {
   const [hackathonsData, setHackathonsData] = useState<Hackathon[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/hackathons")
+    fetch(`${import.meta.env.VITE_API_URL}/hackathons`)
       .then((response) => response.json())
       .then((data) => {
         // sort by date (newest first)

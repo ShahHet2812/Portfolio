@@ -19,7 +19,7 @@ const Projects: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:5000/projects")
+    fetch(`${import.meta.env.VITE_API_URL}/projects`)
       .then((res) => res.json())
       .then((data) => setProjectsData(data))
       .catch((err) => console.error("Error fetching projects:", err));

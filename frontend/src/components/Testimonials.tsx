@@ -15,7 +15,7 @@ const Testimonials: React.FC = () => {
     const [testimonialsData, setTestimonialsData] = useState<Testimonial[]>([]);
 
     useEffect(() => {
-        fetch('http://localhost:5000/testimonials')
+        fetch(`${import.meta.env.VITE_API_URL}/testimonials`)
             .then(response => response.json())
             .then(data => setTestimonialsData(data))
             .catch(error => console.error('Error fetching testimonials:', error));
