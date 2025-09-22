@@ -7,9 +7,11 @@ const Hero: React.FC = () => {
   return (
     <section
       id="home"
-      className="d-flex align-items-center text-center vh-100 position-relative text-white overflow-hidden"
+      className="d-flex align-items-center text-center min-vh-100 position-relative text-white overflow-hidden"
       style={{
         background: "radial-gradient(circle at 20% 30%, #1a1a2e, #0f0c29, #000)",
+        paddingTop: "120px",
+        paddingBottom: "60px",
       }}
     >
       {/* Decorative Background Particles */}
@@ -80,7 +82,7 @@ const Hero: React.FC = () => {
               style={{ color: "rgba(255, 255, 255, 0.85)" }}
             >
               Turning ideas into reality through modern, elegant, and scalable
-              web applications.  
+              web applications.
               <br /> Building with passion. Designing with purpose.
             </p>
 
@@ -128,7 +130,6 @@ const Hero: React.FC = () => {
               >
                 <Mail size={36} />
               </a>
-
             </div>
           </Col>
         </Row>
