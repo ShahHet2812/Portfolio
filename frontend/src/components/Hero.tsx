@@ -7,9 +7,11 @@ const Hero: React.FC = () => {
   return (
     <section
       id="home"
-      className="d-flex align-items-center text-center min-vh-100 position-relative text-white overflow-hidden p-5"
+      className="d-flex align-items-center text-center min-vh-100 position-relative text-white overflow-hidden"
       style={{
         background: "radial-gradient(circle at 20% 30%, #1a1a2e, #0f0c29, #000)",
+        paddingTop: "120px",
+        paddingBottom: "60px",
       }}
     >
       {/* Decorative Background Particles */}
@@ -197,4 +199,3 @@ const Hero: React.FC = () => {
 };
 
 export default Hero;
-
