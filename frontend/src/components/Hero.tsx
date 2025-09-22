@@ -7,7 +7,7 @@ const Hero: React.FC = () => {
   return (
     <section
       id="home"
-      className="d-flex align-items-center text-center vh-100 position-relative text-white overflow-hidden"
+      className="d-flex align-items-center text-center min-vh-100 position-relative text-white overflow-hidden"
       style={{
         background: "radial-gradient(circle at 20% 30%, #1a1a2e, #0f0c29, #000)",
       }}
@@ -61,16 +61,16 @@ const Hero: React.FC = () => {
           {/* Text Content */}
           <Col md={8} className="text-md-start text-center">
             <h1
-  className="fw-bold display-3 mb-3"
-  style={{
-    background: "linear-gradient(90deg, #00e6ff, #ff4ecd, #ffaa00)",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-    display: "inline-block",
-  }}
->
-  Het Shah
-</h1>
+              className="fw-bold display-3 mb-3"
+              style={{
+                background: "linear-gradient(90deg, #00e6ff, #ff4ecd, #ffaa00)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                display: "inline-block",
+              }}
+            >
+              Het Shah
+            </h1>
 
             <h2 className="fw-semibold mb-4 text-light">
               Computer Science Student | Full-Stack Developer
@@ -80,7 +80,7 @@ const Hero: React.FC = () => {
               style={{ color: "rgba(255, 255, 255, 0.85)" }}
             >
               Turning ideas into reality through modern, elegant, and scalable
-              web applications.  
+              web applications.
               <br /> Building with passion. Designing with purpose.
             </p>
 
@@ -121,14 +121,13 @@ const Hero: React.FC = () => {
                 <Linkedin size={36} />
               </a>
               <a
-  href="https://mail.google.com/mail/?view=cm&fs=1&to=work.hetshah28@gmail.com"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="social-icon"
->
-  <Mail size={36} />
-</a>
-
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=work.hetshah28@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-icon"
+              >
+                <Mail size={36} />
+              </a>
             </div>
           </Col>
         </Row>
