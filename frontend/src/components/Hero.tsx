@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { Github, Linkedin, Mail } from "lucide-react";
-import profilePic from "C:/Users/shahh/OneDrive/Desktop/project/frontend/Het.jpg"; // replace with your image
+import profilePic from "/Het.jpg"; // replace with your image
 
 const Hero: React.FC = () => {
   return (
