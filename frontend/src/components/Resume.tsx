@@ -53,46 +53,46 @@ const Resume: React.FC = () => {
               </h2>
 
               <p
-  className="lead mb-5"
-  style={{
-    color: "rgba(255,255,255,0.85)",
-    fontSize: "1.15rem",
-    lineHeight: "1.8",
-    textShadow: "0 0 8px rgba(0, 230, 255, 0.2)",
-  }}
->
-  A complete overview of my{" "}
-  <span
-    style={{
-      color: "#00e6ff",
-      textShadow: "0 0 6px rgba(0,230,255,0.8)",
-      fontWeight: 600,
-    }}
-  >
-    skills
-  </span>
-  ,{" "}
-  <span
-    style={{
-      color: "#ff4ecd",
-      textShadow: "0 0 6px rgba(255,78,205,0.8)",
-      fontWeight: 600,
-    }}
-  >
-    experience
-  </span>{" "}
-  and{" "}
-  <span
-    style={{
-      color: "#ffaa00",
-      textShadow: "0 0 6px rgba(255,170,0,0.8)",
-      fontWeight: 600,
-    }}
-  >
-    achievements
-  </span>
-  . Includes education, projects, internships, and technical expertise.
-</p>
+                className="lead mb-5"
+                style={{
+                  color: "rgba(255,255,255,0.85)",
+                  fontSize: "1.15rem",
+                  lineHeight: "1.8",
+                  textShadow: "0 0 8px rgba(0, 230, 255, 0.2)",
+                }}
+              >
+                A complete overview of my{" "}
+                <span
+                  style={{
+                    color: "#00e6ff",
+                    textShadow: "0 0 6px rgba(0,230,255,0.8)",
+                    fontWeight: 600,
+                  }}
+                >
+                  skills
+                </span>
+                ,{" "}
+                <span
+                  style={{
+                    color: "#ff4ecd",
+                    textShadow: "0 0 6px rgba(255,78,205,0.8)",
+                    fontWeight: 600,
+                  }}
+                >
+                  experience
+                </span>{" "}
+                and{" "}
+                <span
+                  style={{
+                    color: "#ffaa00",
+                    textShadow: "0 0 6px rgba(255,170,0,0.8)",
+                    fontWeight: 600,
+                  }}
+                >
+                  achievements
+                </span>
+                . Includes education, projects, internships, and technical expertise.
+              </p>
 
 
               <Button
