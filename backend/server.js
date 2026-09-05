@@ -36,6 +36,7 @@ app.get('/health', (_req, res) => {
 });
 
 app.use('/projects', require('./routes/projects'));
+app.use('/experience', require('./routes/experience'));
 app.use('/testimonials', require('./routes/testimonials'));
 app.use('/hackathons', require('./routes/hackathons'));
 app.use('/contact', require('./routes/contact'));

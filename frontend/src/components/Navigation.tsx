@@ -3,6 +3,7 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 import { Menu, X, Terminal } from 'lucide-react';
 
 const SECTIONS = [
+  { id: 'experience', name: 'experience', ext: '.service' },
   { id: 'projects', name: 'projects', ext: '.tsx' },
   { id: 'resume', name: 'resume', ext: '.pdf' },
   { id: 'testimonials', name: 'reviews', ext: '.md' },

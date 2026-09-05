@@ -51,10 +51,10 @@ const Contact: React.FC = () => {
   const sending = state === 'sending';
 
   return (
-    <section id="contact" className="section section--alt">
+    <section id="contact" className="section">
       <Container>
         <SectionHeading
-          index="05"
+          index="06"
           comment="say hello"
           command="./contact.sh"
           sub="Open to internships, freelance work and collaborations. Drop a note and it lands straight in my inbox."

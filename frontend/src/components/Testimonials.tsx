@@ -16,9 +16,9 @@ const Testimonials: React.FC = () => {
   const { data: testimonials, status } = useCollection<Testimonial>('testimonials');
 
   return (
-    <section id="testimonials" className="section section--alt">
+    <section id="testimonials" className="section">
       <Container>
-        <SectionHeading index="03" comment="what people say" command="cat ~/reviews.md" />
+        <SectionHeading index="04" comment="what people say" command="cat ~/reviews.md" />
 
         <FetchState status={status} count={testimonials.length} label="reviews" />
 

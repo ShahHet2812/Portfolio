@@ -29,10 +29,10 @@ const Hackathons: React.FC = () => {
   );
 
   return (
-    <section id="hackathons" className="section">
+    <section id="hackathons" className="section section--alt">
       <Container>
         <SectionHeading
-          index="04"
+          index="05"
           comment="48 hours, no sleep"
           command="git log --oneline ~/hackathons"
           sub="Weekend builds, demo-day scrambles and everything that survived the deploy."

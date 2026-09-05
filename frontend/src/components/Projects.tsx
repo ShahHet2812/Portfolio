@@ -28,10 +28,10 @@ const Projects: React.FC = () => {
   const [selected, setSelected] = useState<Project | null>(null);
 
   return (
-    <section id="projects" className="section section--alt">
+    <section id="projects" className="section">
       <Container>
         <SectionHeading
-          index="01"
+          index="02"
           comment="things i have shipped"
           command="ls ~/projects"
           sub="A selection of applications and experiments, mostly built around React, Node and MongoDB."
