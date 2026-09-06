@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Github, Linkedin, Mail, ArrowRight } from 'lucide-react';
+
+// ~500KB of three.js, so it loads after the page is interactive and only on
+// hardware likely to render it smoothly.
+const HeroScene = lazy(() => import('./three/HeroScene'));
 
 const ROLES = [
   'full-stack developer',
@@ -45,9 +49,26 @@ const useTypewriter = (words: string[]) => {
 
 const Hero: React.FC = () => {
   const role = useTypewriter(ROLES);
+  const [show3d, setShow3d] = useState(false);
+
+  useEffect(() => {
+    const wideEnough = window.innerWidth >= 768;
+    const enoughCores = (navigator.hardwareConcurrency ?? 4) >= 4;
+    setShow3d(!prefersReducedMotion() && wideEnough && enoughCores);
+  }, []);
 
   return (
-    <section id="home" className="section" style={{ paddingTop: 'calc(var(--nav-h) + 72px)', borderTop: 0 }}>
+    <section
+      id="home"
+      className="section hero"
+      style={{ paddingTop: 'calc(var(--nav-h) + 72px)', borderTop: 0 }}
+    >
+      {show3d && (
+        <Suspense fallback={null}>
+          <HeroScene />
+        </Suspense>
+      )}
+
       <Container>
         <Row className="align-items-center g-5">
           <Col lg={8}>

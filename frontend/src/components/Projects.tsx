@@ -3,6 +3,8 @@ import { Container, Row, Col, Modal, Carousel } from 'react-bootstrap';
 import { Github, FileText } from 'lucide-react';
 import SectionHeading from './SectionHeading';
 import FetchState from './FetchState';
+import Reveal from './motion/Reveal';
+import Tilt from './motion/Tilt';
 import { useCollection } from '../hooks/useCollection';
 
 interface Project {
@@ -44,52 +46,63 @@ const Projects: React.FC = () => {
             const stack = project.techStack ?? [];
             return (
               <Col lg={4} md={6} className="mb-4" key={project._id}>
-                <article className="pane">
-                  <div className="pane__head">
-                    <span className="dot" />
-                    <span>{slugify(project.title)}/</span>
-                    <span className="ms-auto t-faint">{String(i + 1).padStart(2, '0')}</span>
-                  </div>
+                <Reveal delay={i * 0.08} className="h-100">
+                  <Tilt>
+                    <article className="pane">
+                      <div className="pane__head">
+                        <span className="dot" />
+                        <span>{slugify(project.title)}/</span>
+                        <span className="ms-auto t-faint">{String(i + 1).padStart(2, '0')}</span>
+                      </div>
 
-                  {project.image && (
-                    <img className="pane__shot" src={project.image} alt={project.title} loading="lazy" />
-                  )}
-
-                  <div className="pane__body">
-                    <h3 className="pane__title">{project.title}</h3>
-                    <p className="pane__desc">{project.description}</p>
-
-                    <div className="mb-3">
-                      {stack.slice(0, 4).map((tech) => (
-                        <span className="tag" key={tech}>
-                          {tech}
-                        </span>
-                      ))}
-                      {stack.length > 4 && <span className="tag tag--more">+{stack.length - 4}</span>}
-                    </div>
-
-                    <div className="d-flex gap-2 mt-auto">
-                      <button
-                        type="button"
-                        className="btn-term btn-term--sm"
-                        onClick={() => setSelected(project)}
-                      >
-                        <span className="kw">cat</span> README.md
-                      </button>
-                      {project.githubUrl && (
-                        <a
-                          href={project.githubUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn-term btn-term--sm"
-                          aria-label={`${project.title} source on GitHub`}
-                        >
-                          <Github size={15} />
-                        </a>
+                      {project.image && (
+                        <img
+                          className="pane__shot"
+                          src={project.image}
+                          alt={project.title}
+                          loading="lazy"
+                        />
                       )}
-                    </div>
-                  </div>
-                </article>
+
+                      <div className="pane__body">
+                        <h3 className="pane__title">{project.title}</h3>
+                        <p className="pane__desc">{project.description}</p>
+
+                        <div className="mb-3">
+                          {stack.slice(0, 4).map((tech) => (
+                            <span className="tag" key={tech}>
+                              {tech}
+                            </span>
+                          ))}
+                          {stack.length > 4 && (
+                            <span className="tag tag--more">+{stack.length - 4}</span>
+                          )}
+                        </div>
+
+                        <div className="d-flex gap-2 mt-auto">
+                          <button
+                            type="button"
+                            className="btn-term btn-term--sm"
+                            onClick={() => setSelected(project)}
+                          >
+                            <span className="kw">cat</span> README.md
+                          </button>
+                          {project.githubUrl && (
+                            <a
+                              href={project.githubUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="btn-term btn-term--sm"
+                              aria-label={`${project.title} source on GitHub`}
+                            >
+                              <Github size={15} />
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    </article>
+                  </Tilt>
+                </Reveal>
               </Col>
             );
           })}

@@ -1,0 +1,25 @@
+{
+  "name": "portfolio-worker",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Cloudflare Worker serving the portfolio API and static site",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "build:site": "npm --prefix ../frontend run build",
+    "deploy": "npm run build:site && wrangler deploy",
+    "db:migrate:local": "wrangler d1 execute portfolio --local --file=./db/schema.sql",
+    "db:seed:local": "wrangler d1 execute portfolio --local --file=./db/seed.sql",
+    "db:migrate": "wrangler d1 execute portfolio --remote --file=./db/schema.sql",
+    "db:seed": "wrangler d1 execute portfolio --remote --file=./db/seed.sql",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "hono": "^4.6.14"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260906.1",
+    "typescript": "^5.5.3",
+    "wrangler": "^4.129.0"
+  }
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import Reveal from './motion/Reveal';
 
 interface SectionHeadingProps {
   /** Two-digit ordinal shown in the leading comment, e.g. "01". */
@@ -11,7 +12,7 @@ interface SectionHeadingProps {
 }
 
 const SectionHeading: React.FC<SectionHeadingProps> = ({ index, command, comment, sub }) => (
-  <div className="section-head">
+  <Reveal className="section-head">
     <p className="section-kicker mb-0">
       // {index} — {comment}
     </p>
@@ -21,7 +22,7 @@ const SectionHeading: React.FC<SectionHeadingProps> = ({ index, command, comment
     </h2>
     {sub && <p className="section-sub">{sub}</p>}
     <div className="rule" />
-  </div>
+  </Reveal>
 );
 
 export default SectionHeading;

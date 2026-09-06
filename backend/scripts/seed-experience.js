@@ -10,7 +10,10 @@
 require('dotenv').config();
 
 const mongoose = require('mongoose');
+mongoose.set('strictQuery', true);
+
 const Experience = require('../models/experience.model');
+const Project = require('../models/project.model');
 
 // ---------------------------------------------------------------------------
 // EDIT THIS BLOCK. Anything still containing "TODO" will abort the run.
@@ -63,6 +66,18 @@ const findPlaceholders = (roles) => {
   return found;
 };
 
+/** Returns a human-readable problem with ATLAS_URI, or null if it looks usable. */
+function describeUriProblem(uri) {
+  if (!uri) return 'ATLAS_URI is not set in backend/.env';
+  if (!/^mongodb(\+srv)?:\/\//.test(uri)) {
+    return 'ATLAS_URI must start with "mongodb://" or "mongodb+srv://"';
+  }
+  if (/[<>]/.test(uri)) {
+    return 'ATLAS_URI still has an unfilled placeholder in angle brackets (e.g. <db_password>)';
+  }
+  return null;
+}
+
 async function main() {
   const placeholders = findPlaceholders(ROLES);
   if (placeholders.length > 0) {
@@ -73,13 +88,32 @@ async function main() {
   }
 
   const uri = process.env.ATLAS_URI;
-  if (!uri) {
-    console.error('ATLAS_URI is not set. Add it to backend/.env first.');
+  const uriProblem = describeUriProblem(uri);
+  if (uriProblem) {
+    console.error(`Cannot connect: ${uriProblem}.\n`);
+    console.error('Copy ATLAS_URI exactly as it appears in your Render dashboard (Environment tab)');
+    console.error('into backend/.env — that value already has the right password and database name.');
     process.exit(1);
   }
 
   await mongoose.connect(uri);
-  console.log('[seed] connected to MongoDB');
+  const dbName = mongoose.connection.name;
+  console.log(`[seed] connected — database: "${dbName}"`);
+
+  // The live site reads projects from this same database, so an empty projects
+  // collection means we're pointed somewhere else (commonly the default "test"
+  // database, when the URI omits a database name).
+  const projectCount = await Project.estimatedDocumentCount();
+  if (projectCount === 0 && !process.argv.includes('--force')) {
+    console.error(`\nAborting: database "${dbName}" contains no projects.`);
+    console.error('That almost certainly means this is not the database the live site uses.');
+    console.error('Check that ATLAS_URI includes the database name, e.g.');
+    console.error('  mongodb+srv://user:pass@cluster.mongodb.net/portfolio?retryWrites=true&w=majority');
+    console.error('\nRe-run with --force if you are certain this database is correct.');
+    await mongoose.disconnect();
+    process.exit(1);
+  }
+  console.log(`[seed] sanity check: found ${projectCount} project(s) in "${dbName}"`);
 
   for (const role of ROLES) {
     const result = await Experience.updateOne(

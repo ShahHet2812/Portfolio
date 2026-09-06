@@ -1,0 +1,35 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "portfolio",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-01-15",
+
+  // Serves the built React app. Unknown paths fall back to index.html so
+  // client-side anchors and deep links work.
+  "assets": {
+    "directory": "../frontend/dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application"
+  },
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "portfolio",
+      "database_id": "b03305f7-29ae-410b-b03e-e2db4b7b4f85"
+    }
+  ],
+
+  "vars": {
+    "SITE_NAME": "hetshah.xyz",
+    "NOTIFY_EMAIL": "shahhet28122004@gmail.com",
+    "MAIL_FROM": "Portfolio <noreply@hetshah.xyz>"
+  },
+
+  "observability": {
+    "enabled": true
+  }
+
+  // Secret, set separately and never committed:
+  //   wrangler secret put RESEND_API_KEY
+}

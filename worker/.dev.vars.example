@@ -1,0 +1,6 @@
+# Copy to .dev.vars for local `wrangler dev`. Never commit the real file.
+#
+# In production this is set as a Worker secret instead:
+#   wrangler secret put RESEND_API_KEY
+
+RESEND_API_KEY=re_your_key_here
