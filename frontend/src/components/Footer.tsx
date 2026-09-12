@@ -31,9 +31,9 @@ const Footer: React.FC = () => (
           <a href="https://x.com/SHAHHet94920284" target="_blank" rel="noopener noreferrer" aria-label="X / Twitter">
             <Twitter size={15} />
           </a>
-          <a href="#home" className="statusbar__item">
+          <a href="/" className="statusbar__item">
             <ArrowUp size={13} />
-            top
+            home
           </a>
         </div>
       </div>

@@ -33,6 +33,20 @@
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.interactive-shell { margin: 24px 0; padding: 20px; border: 1px solid var(--border-strong); border-radius: 8px; background: var(--bg); }
+.App { min-height: 100dvh; display: flex; flex-direction: column; }
+.App > main { flex: 1; }
+.inner-page > .section { padding-top: calc(var(--nav-h) + 48px); min-height: calc(100dvh - 80px); }
+.shell-output { max-height: 300px; overflow-y: auto; overflow-wrap: anywhere; white-space: pre-wrap; font-size: .86rem; }
+.shell-output p { margin: 8px 0 18px; }
+.shell-prompt { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.shell-prompt input { flex: 1; min-width: 80px; width: 100%; background: transparent; border: 0; color: var(--text-strong); font: inherit; }
+.personal-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,260px),1fr)); gap: 24px; }
+.journal-photo { width: 100%; border-radius: 8px; aspect-ratio: 4/3; object-fit: cover; }
+details summary { cursor: pointer; }
+details article { margin-top: 24px; white-space: pre-wrap; }
+@media (min-width:1400px) { .nav-tab { font-size: .75rem; } .nav-tab .ext { display: none; } }
+
 *,
 *::before,
 *::after {

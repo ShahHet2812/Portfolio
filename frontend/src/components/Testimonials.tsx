@@ -3,6 +3,7 @@ import { Container, Row, Col, Carousel } from 'react-bootstrap';
 import SectionHeading from './SectionHeading';
 import Reveal from './motion/Reveal';
 import FetchState from './FetchState';
+import TestimonialForm from './TestimonialForm';
 import { useCollection } from '../hooks/useCollection';
 
 interface Testimonial {
@@ -11,6 +12,9 @@ interface Testimonial {
   role: string;
   avatar: string;
   text: string;
+  company?: string;
+  experience?: string;
+  relationship?: string;
 }
 
 const Testimonials: React.FC = () => {
@@ -61,9 +65,12 @@ const Testimonials: React.FC = () => {
                             </div>
                             <div className="mono t-faint" style={{ fontSize: '0.8125rem' }}>
                               {testimonial.role}
+                              {testimonial.company && ` · ${testimonial.company}`}
                             </div>
                           </div>
                         </figcaption>
+                        {testimonial.experience && <p className="mt-3">Work experience: {testimonial.experience}</p>}
+                        {testimonial.relationship && <p className="t-dim">{testimonial.relationship}</p>}
                       </div>
                     </div>
                   </Carousel.Item>
@@ -72,6 +79,7 @@ const Testimonials: React.FC = () => {
             </Col>
           </Row>
         </Reveal>
+        <TestimonialForm />
       </Container>
     </section>
   );

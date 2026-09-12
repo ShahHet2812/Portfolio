@@ -28,7 +28,10 @@
 
   "observability": {
     "enabled": true
-  }
+  },
+
+  // Keep the staging URL available alongside the custom domain.
+  "workers_dev": true
 
   // Secret, set separately and never committed:
   //   wrangler secret put RESEND_API_KEY

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Github, Linkedin, Mail, ArrowRight } from 'lucide-react';
+import InteractiveTerminal from './InteractiveTerminal';
 
 // ~500KB of three.js, so it loads after the page is interactive and only on
 // hardware likely to render it smoothly.
@@ -10,7 +11,7 @@ const ROLES = [
   'full-stack developer',
   'react + node engineer',
   'hackathon builder',
-  'cs undergrad @ ahmedabad',
+  'network & security engineer',
 ];
 
 const prefersReducedMotion = () =>
@@ -100,17 +101,18 @@ const Hero: React.FC = () => {
 
                 <div className="term__cmd">./about --brief</div>
                 <p className="term__out mb-4" style={{ maxWidth: '58ch' }}>
-                  I build modern, scalable web applications end to end — from schema design and API
-                  layers through to interfaces people actually enjoy using.
+                  Engineer, builder, and a person beyond the job title. Explore my work,
+                  interests, moments and thoughts — or get to know me through the terminal below.
                 </p>
 
                 <div className="term__cmd">ls ./actions</div>
+                <InteractiveTerminal />
                 <div className="term__out d-flex flex-wrap gap-2 mb-4">
-                  <a href="#projects" className="btn-term btn-term--primary">
+                  <a href="/projects" className="btn-term btn-term--primary">
                     <span className="kw">./</span>view-projects
                     <ArrowRight size={15} />
                   </a>
-                  <a href="#contact" className="btn-term">
+                  <a href="/contact" className="btn-term">
                     <span className="kw">./</span>get-in-touch
                   </a>
                 </div>

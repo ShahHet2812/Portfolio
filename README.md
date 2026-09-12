@@ -1,5 +1,47 @@
 # Portfolio — hetshah.xyz
 
+## Personal site and community reviews
+
+Home (`/`) contains only the introduction and interactive terminal. Interests,
+photos, blog, experience, projects, resume, testimonials, hackathons and contact
+each have a separate URL, listed in `frontend/src/lib/pages.ts`. Navbar links and
+terminal commands (`projects`, `cd photos`, `open experience`) open those pages.
+Normal links support new tabs, browser history and direct bookmarks. The Worker’s
+existing SPA asset fallback serves direct page URLs and refreshes; unknown paths
+render a friendly not-found screen. No additional hosting redirects are needed.
+
+The hero terminal accepts `help`, `whoami`, `about`, `experience`, `projects`,
+`interests`, `photos`, `blog`, `contact`, `resume`, `ls`, `pwd`, `clear`,
+`cat about.txt`, `cd <page>` and `open <page>`. It supports command history and tab completion.
+It is a site guide, not an operating-system shell.
+
+Edit `frontend/src/content/personal.ts` to add interests, photo captions and blog
+posts. Place photo files under `frontend/public/` and use paths such as
+`/photos/weekend.jpg`. Posts use plain text paragraphs, rendered without raw HTML.
+The initial collections are empty until Het supplies his own content.
+
+Before deploying this version, run `npm run db:reviews` from `worker/`.
+This additive migration creates the submission table without changing existing
+contacts or site content. **Do not run the old `db:migrate` reset script on production.**
+For local development run `npm run db:reviews:local` after initial database setup.
+
+Visitors submit a photo (JPG/PNG/WebP, at most 250 KB), contact details, professional
+background, relationship, testimonial and publication consent. Email addresses
+remain private. The existing Resend secret sends Het a review link, valid for
+30 days. The link opens a private preview; an explicit POST approves or rejects
+the submission. GET requests, including email link scanners, never publish it.
+Only approved rows and images are publicly accessible. Existing testimonials remain.
+The raw review token is sent only by email; D1 stores its SHA-256 hash.
+
+Email failures preserve the pending submission and return a clear delayed-email
+message. There is no automatic retry or admin dashboard in this version; inspect
+`testimonial_submissions WHERE status='pending' AND notified=0` if delivery fails.
+Expired review links likewise require owner intervention. No pending records are
+automatically published. Images are stored as bounded D1 blobs for this small site.
+
+Run `npm run test:reviews` in `worker/` (Node 22.13+ with node:sqlite) to check
+moderation, privacy, token expiry, replay protection, rate limits and mail failures.
+
 Personal portfolio with a terminal/IDE aesthetic. React frontend, Cloudflare
 Worker API, D1 (SQLite) database — all deployed as a single Worker on one
 domain.

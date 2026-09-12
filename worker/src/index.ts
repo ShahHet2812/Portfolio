@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import testimonialRoutes from './testimonials';
 import { cors } from 'hono/cors';
 import {
   countRecentContacts,
@@ -141,6 +142,7 @@ app.post('/api/contact/add', async (c) => {
   return c.json({ ok: true }, 201);
 });
 
+app.route('/api/reviews', testimonialRoutes);
 app.all('/api/*', (c) => c.json({ error: 'Not found.' }, 404));
 
 // Everything else is the React app, served from the static assets binding.

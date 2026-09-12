@@ -92,7 +92,10 @@ export async function listTestimonials(db: D1Database) {
         ORDER BY position, name`
     )
     .all<TestimonialRow>();
-  return results;
+  const approved = await db.prepare(`SELECT id AS _id,name,role,company,experience,relationship,
+    '/api/reviews/photo/' || id AS avatar,message AS text FROM testimonial_submissions
+    WHERE status='approved' ORDER BY created_at DESC`).all();
+  return [...approved.results, ...results];
 }
 
 export async function listHackathons(db: D1Database) {
