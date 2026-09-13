@@ -10,16 +10,12 @@ import Testimonials from './components/Testimonials';
 import Hackathons from './components/Hackathons';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import Personal from './components/Personal';
 import { currentPath, pages } from './lib/pages';
 
 function App() {
   const path = currentPath();
   const content: Record<string, ReactNode> = {
     '/': <Hero />,
-    '/interests': <Personal page="interests" />,
-    '/photos': <Personal page="photos" />,
-    '/blog': <Personal page="blog" />,
     '/experience': <Experience />,
     '/projects': <Projects />,
     '/resume': <Resume />,

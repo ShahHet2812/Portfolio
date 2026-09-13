@@ -101,8 +101,8 @@ const Hero: React.FC = () => {
 
                 <div className="term__cmd">./about --brief</div>
                 <p className="term__out mb-4" style={{ maxWidth: '58ch' }}>
-                  Engineer, builder, and a person beyond the job title. Explore my work,
-                  interests, moments and thoughts — or get to know me through the terminal below.
+                  Engineer, builder, and a person beyond the job title. Explore my work
+                  and experience — or get to know me through the terminal below.
                 </p>
 
                 <div className="term__cmd">ls ./actions</div>

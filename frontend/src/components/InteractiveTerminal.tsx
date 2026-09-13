@@ -18,7 +18,7 @@ export default function InteractiveTerminal() {
     let result = '';
     const [cmd,...args] = command.toLowerCase().split(/\s+/);
     try {
-      if (cmd === 'help') result = `${commands.join(' · ')}\nEnter a page name to open it: projects, photos, blog, reviews…\nOr use cd photos / open experience. ↑/↓ history · Tab completes commands.\nwhoami and cat about.txt show information here.`;
+      if (cmd === 'help') result = `${commands.join(' · ')}\nEnter a page name to open it: projects, experience, reviews…\nOr use cd projects / open experience. ↑/↓ history · Tab completes commands.\nwhoami and cat about.txt show information here.`;
       else if (cmd === 'whoami') result = 'Het Shah\nJunior Network and Security Engineer at Ray Secure Innovations Private Limited\nAhmedabad, Gujarat';
       else if (cmd === 'about' || (cmd === 'cat' && args[0] === 'about.txt')) result = personal.bio;
       else if (cmd === 'pwd') result = '/home/het';
@@ -38,6 +38,6 @@ export default function InteractiveTerminal() {
       if (e.key === 'Tab') { e.preventDefault(); const prefix = /^(cd|open)\s+/.exec(input)?.[0] || ''; const matches=(prefix ? pages.map(p => p.command) : commands).filter(c => c.startsWith(input.slice(prefix.length))); if(matches.length===1) setInput(prefix + matches[0]); }
       if(e.key==='ArrowUp' || e.key==='ArrowDown') { e.preventDefault(); const next=Math.max(0,Math.min(history.length,cursor+(e.key==='ArrowUp'?-1:1))); setCursor(next);setInput(history[next] || ''); }
     }} /><button className="btn-term btn-term--sm">Run</button></form>
-    <div className="d-flex flex-wrap gap-2 mt-3">{['help','whoami','projects','interests','blog'].map(cmd => <button className="btn-term btn-term--sm" key={cmd} onClick={() => void run(cmd)}>{cmd}</button>)}</div>
+    <div className="d-flex flex-wrap gap-2 mt-3">{['help','whoami','projects','experience','contact'].map(cmd => <button className="btn-term btn-term--sm" key={cmd} onClick={() => void run(cmd)}>{cmd}</button>)}</div>
   </div>;
 }
