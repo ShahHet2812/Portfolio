@@ -25,7 +25,11 @@ This additive migration creates the submission table without changing existing
 contacts or site content. **Do not run the old `db:migrate` reset script on production.**
 For local development run `npm run db:reviews:local` after initial database setup.
 
-Visitors submit a photo (JPG/PNG/WebP, at most 250 KB), contact details, professional
+Visitors select a photo (JPG/PNG/WebP, at most 20 MB). The browser automatically
+resizes it to at most 960 pixels on its longest edge and compresses it to a JPEG
+under 250 KB, showing a preview before submission. Original files and metadata
+are not uploaded. The API continues enforcing the 250 KB processed-image limit.
+Visitors also submit contact details, professional
 background, relationship, testimonial and publication consent. Email addresses
 remain private. The existing Resend secret sends Het a review link, valid for
 30 days. The link opens a private preview; an explicit POST approves or rejects
