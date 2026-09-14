@@ -36,6 +36,34 @@
 .interactive-shell { margin: 24px 0; padding: 20px; border: 1px solid var(--border-strong); border-radius: 8px; background: var(--bg); }
 .App { min-height: 100dvh; display: flex; flex-direction: column; }
 .App > main { flex: 1; }
+.App > main { animation: workspace-enter .38s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes workspace-enter {
+  from { opacity: 0; transform: perspective(1400px) translateY(12px) translateZ(-24px); }
+  to { opacity: 1; transform: none; }
+}
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: workspace-exit .18s ease both; }
+::view-transition-new(root) { animation: workspace-enter .3s ease both; }
+@keyframes workspace-exit { to { opacity: 0; transform: scale(.985); } }
+
+.network-widget { width: 100%; max-width: 420px; }
+.network-viewport { height: 300px; touch-action: pan-y; cursor: grab; }
+.network-viewport:active { cursor: grabbing; }
+.window-control { width: 26px !important; height: 26px !important; border: 0; padding: 0; color: #10151c; font: bold 17px/26px var(--mono); cursor: pointer; }
+.terminal-depth .terminal-window { overflow: visible; transform-style: preserve-3d; }
+.terminal-depth .win__bar { border-radius: 8px 8px 0 0; transform: translateZ(8px); }
+.terminal-depth .win__body { transform-style: preserve-3d; }
+.terminal-depth .interactive-shell { transform: translateZ(22px); box-shadow: 0 14px 32px #0004; }
+.terminal-depth h1 { transform: translateZ(14px); }
+#projects .tilt .pane { overflow: visible; transform-style: preserve-3d; }
+#projects .pane__shot { transition: transform .25s ease, box-shadow .25s ease; position: relative; border-radius: 6px; }
+@media (hover: hover) and (pointer: fine) {
+  #projects .tilt:hover .pane__shot, #projects .tilt:focus-within .pane__shot { transform: translateZ(32px) translateY(-5px) scale(1.025); box-shadow: 0 18px 32px #0006; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .App > main, ::view-transition-old(root), ::view-transition-new(root) { animation: none !important; }
+  .tilt, .terminal-depth .win__bar, .terminal-depth .interactive-shell, .terminal-depth h1, #projects .tilt .pane__shot { transform: none !important; transition: none !important; }
+}
 .inner-page > .section { padding-top: calc(var(--nav-h) + 48px); min-height: calc(100dvh - 80px); }
 .shell-output { max-height: 300px; overflow-y: auto; overflow-wrap: anywhere; white-space: pre-wrap; font-size: .86rem; }
 .shell-output p { margin: 8px 0 18px; }
