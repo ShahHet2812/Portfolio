@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useEffect } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { useReducedMotion } from 'framer-motion';
 
 interface TiltProps {
@@ -19,13 +19,11 @@ const Tilt: React.FC<TiltProps> = ({ children, max = 7, className }) => {
   const ref = useRef<HTMLDivElement>(null);
   const frame = useRef<number>(0);
   const reduced = useReducedMotion();
-  useEffect(() => () => cancelAnimationFrame(frame.current), []);
-  useEffect(() => { if (reduced) { cancelAnimationFrame(frame.current); ref.current?.style.setProperty('--rx','0deg'); ref.current?.style.setProperty('--ry','0deg'); } }, [reduced]);
 
   const handleMove = useCallback(
     (event: React.PointerEvent<HTMLDivElement>) => {
       const node = ref.current;
-      if (!node || event.pointerType === 'touch') return;
+      if (!node) return;
 
       const { clientX, clientY } = event;
       cancelAnimationFrame(frame.current);

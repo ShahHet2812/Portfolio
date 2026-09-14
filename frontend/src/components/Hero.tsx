@@ -2,7 +2,6 @@ import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Github, Linkedin, Mail, ArrowRight } from 'lucide-react';
 import InteractiveTerminal from './InteractiveTerminal';
-import Tilt from './motion/Tilt';
 
 // ~500KB of three.js, so it loads after the page is interactive and only on
 // hardware likely to render it smoothly.
@@ -52,12 +51,11 @@ const useTypewriter = (words: string[]) => {
 const Hero: React.FC = () => {
   const role = useTypewriter(ROLES);
   const [show3d, setShow3d] = useState(false);
-  const [minimized,setMinimized] = useState(false);
-  const [expanded,setExpanded] = useState(false);
-  const [terminalSession,setTerminalSession] = useState(0);
 
   useEffect(() => {
-    setShow3d(true);
+    const wideEnough = window.innerWidth >= 768;
+    const enoughCores = (navigator.hardwareConcurrency ?? 4) >= 4;
+    setShow3d(!prefersReducedMotion() && wideEnough && enoughCores);
   }, []);
 
   return (
@@ -66,23 +64,27 @@ const Hero: React.FC = () => {
       className="section hero"
       style={{ paddingTop: 'calc(var(--nav-h) + 72px)', borderTop: 0 }}
     >
+      {show3d && (
+        <Suspense fallback={null}>
+          <HeroScene />
+        </Suspense>
+      )}
+
       <Container>
         <Row className="align-items-center g-5">
-          <Col lg={expanded ? 12 : 8}>
-            <Tilt max={2} className="terminal-depth">
-            <div className="win terminal-window">
+          <Col lg={8}>
+            <div className="win">
               <div className="win__bar">
                 <div className="win__dots">
-                  <button type="button" className="win__dot win__dot--r window-control" title="Reset terminal output" aria-label="Reset terminal output" onClick={()=>{setTerminalSession(n=>n+1);setMinimized(false);}}>↺</button>
-                  <button type="button" className="win__dot win__dot--y window-control" title={minimized?'Restore terminal':'Minimise terminal'} aria-label={minimized?'Restore terminal':'Minimise terminal'} aria-expanded={!minimized} aria-controls="terminal-body" onClick={()=>setMinimized(!minimized)}>−</button>
-                  <button type="button" className="win__dot win__dot--g window-control" title={expanded?'Restore terminal size':'Expand terminal'} aria-label={expanded?'Restore terminal size':'Expand terminal'} aria-pressed={expanded} onClick={()=>{setExpanded(!expanded);setMinimized(false);}}>+</button>
+                  <span className="win__dot win__dot--r" />
+                  <span className="win__dot win__dot--y" />
+                  <span className="win__dot win__dot--g" />
                 </div>
                 <span className="win__title">het@hetshah.xyz: ~/portfolio</span>
                 <span className="win__meta">zsh</span>
               </div>
 
-              {minimized && <div className="p-4 mono">Het Shah · terminal minimised <button className="btn-term btn-term--sm ms-2" onClick={()=>setMinimized(false)}>Restore</button></div>}
-              <div id="terminal-body" className="win__body term" hidden={minimized}>
+              <div className="win__body term">
                 <div className="term__cmd">whoami</div>
                 <h1
                   className="term__out mono t-strong mb-3"
@@ -104,7 +106,7 @@ const Hero: React.FC = () => {
                 </p>
 
                 <div className="term__cmd">ls ./actions</div>
-                <InteractiveTerminal key={terminalSession} />
+                <InteractiveTerminal />
                 <div className="term__out d-flex flex-wrap gap-2 mb-4">
                   <a href="/projects" className="btn-term btn-term--primary">
                     <span className="kw">./</span>view-projects
@@ -141,16 +143,14 @@ const Hero: React.FC = () => {
                 </div>
               </div>
             </div>
-            </Tilt>
           </Col>
 
-          {!expanded && <Col lg={4} className="d-flex flex-column align-items-center gap-4">
+          <Col lg={4} className="d-flex justify-content-center justify-content-lg-end">
             <div className="portrait">
               <img src="/Het.jpg" alt="Het Shah" width={250} height={250} />
               <span className="portrait__tag">~/Het.jpg</span>
             </div>
-            {show3d && <Suspense fallback={<p className="mono t-dim">Loading network…</p>}><HeroScene /></Suspense>}
-          </Col>}
+          </Col>
         </Row>
       </Container>
     </section>
