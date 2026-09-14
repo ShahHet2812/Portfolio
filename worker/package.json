@@ -5,6 +5,9 @@
   "description": "Cloudflare Worker serving the portfolio API and static site",
   "type": "module",
   "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "db:admin": "wrangler d1 execute portfolio --remote --file=./db/migrations/0002-admin.sql",
+    "db:admin:local": "wrangler d1 execute portfolio --local --file=./db/migrations/0002-admin.sql",
     "test:reviews": "node --test tests/reviews.test.mjs",
     "db:reviews:local": "wrangler d1 execute portfolio --local --file=./db/migrations/0001-testimonial-submissions.sql",
     "db:reviews": "wrangler d1 execute portfolio --remote --file=./db/migrations/0001-testimonial-submissions.sql",
@@ -18,7 +21,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "hono": "^4.6.14"
+    "hono": "^4.6.14",
+    "jose": "^6.2.12"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260906.1",

@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { Menu, X, Terminal } from 'lucide-react';
 import { currentPath, pages } from '../lib/pages';
 
 export default function Navigation() {
   const [expanded, setExpanded] = useState(false);
+  const [extra,setExtra]=useState<{path:string;label:string}[]>([]);
+  useEffect(()=>{fetch('/api/sections').then(r=>r.ok?r.json():[]).then(rows=>setExtra(rows.filter((r:{name:string})=>['photos','blog','interests'].includes(r.name)).map((r:{name:string})=>({path:`/${r.name}`,label:r.name[0].toUpperCase()+r.name.slice(1)})))).catch(()=>{});},[]);
   return (
     <Navbar expand="xxl" expanded={expanded} onToggle={setExpanded} className="nav-shell py-2 is-scrolled">
       <Container>
@@ -17,7 +19,7 @@ export default function Navigation() {
         </Navbar.Toggle>
         <Navbar.Collapse id="navbar-nav">
           <Nav className="ms-auto align-items-xxl-center gap-xxl-1">
-            {pages.map(page => (
+            {[...pages,...extra].map(page => (
               <Nav.Link key={page.path} href={page.path} aria-current={currentPath() === page.path ? 'page' : undefined}
                 className={`nav-tab ${currentPath() === page.path ? 'is-active' : ''}`}>
                 {page.label}

@@ -1,5 +1,7 @@
 import { Hono } from 'hono';
 import testimonialRoutes from './testimonials';
+import adminRoutes from './admin';
+import { adminGuard } from './admin-auth';
 import { cors } from 'hono/cors';
 import {
   countRecentContacts,
@@ -16,9 +18,32 @@ export interface Env extends MailEnv {
   DB: D1Database;
   ASSETS: Fetcher;
   ALLOWED_ORIGINS?: string;
+  ACCESS_TEAM_DOMAIN?: string;
+  ACCESS_AUD?: string;
+  OWNER_SUB?: string;
+  GOOGLE_CLIENT_ID?: string;
+  MEDIA?: R2Bucket;
 }
 
 const app = new Hono<{ Bindings: Env }>();
+
+app.use('*', async (c, next) => {
+  if (new URL(c.req.url).hostname === 'admin.hetshah.xyz' || /^\/(api\/admin|admin)(\/|$)/.test(c.req.path)) return adminGuard(c, next);
+  await next();
+});
+app.route('/api/admin', adminRoutes);
+app.get('/api/sections', async c => {c.header('Cache-Control','no-store');return c.json((await c.env.DB.prepare('SELECT name FROM site_sections WHERE enabled=1').all()).results);});
+app.get('/api/content/:kind', async c => {
+  const kind=c.req.param('kind');
+  if (!await c.env.DB.prepare('SELECT name FROM site_sections WHERE name=? AND enabled=1').bind(kind).first()) return c.notFound();
+  c.header('Cache-Control','no-store');
+  return c.json((await c.env.DB.prepare("SELECT id,title,slug,body,caption,alt,media_id,updated_at FROM content_entries WHERE kind=? AND status='published' ORDER BY position,updated_at DESC").bind(kind).all()).results);
+});
+app.get('/api/media/:id', async c => {
+  const row=await c.env.DB.prepare("SELECT m.object_key FROM media m JOIN content_entries e ON e.media_id=m.id JOIN site_sections s ON s.name=e.kind WHERE m.id=? AND e.status='published' AND s.enabled=1 LIMIT 1").bind(c.req.param('id')).first<{object_key:string}>();
+  const object=row&&c.env.MEDIA?await c.env.MEDIA.get(row.object_key):null;
+  return object?new Response(object.body,{headers:{'Content-Type':'image/jpeg','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}}):c.notFound();
+});
 
 // The site and API share an origin, so CORS only matters if something external
 // calls the API. Left open unless ALLOWED_ORIGINS is set.

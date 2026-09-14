@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useEffect, type ReactNode } from 'react';
+import { lazy, Suspense, useEffect, type ReactNode } from 'react';
 import './App.css';
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
@@ -11,8 +11,14 @@ import Hackathons from './components/Hackathons';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import { currentPath, pages } from './lib/pages';
+const Admin = lazy(() => import('./components/Admin'));
+import PublishedContent from './components/PublishedContent';
 
 function App() {
+  if (window.location.hostname === 'admin.hetshah.xyz' || currentPath() === '/admin') return <Suspense fallback={<p>Loading owner dashboard…</p>}><Admin /></Suspense>;
+  return <PublicApp />;
+}
+function PublicApp() {
   const path = currentPath();
   const content: Record<string, ReactNode> = {
     '/': <Hero />,
@@ -22,10 +28,13 @@ function App() {
     '/testimonials': <Testimonials />,
     '/hackathons': <Hackathons />,
     '/contact': <Contact />,
+    '/photos': <PublishedContent kind="photos" />,
+    '/blog': <PublishedContent kind="blog" />,
+    '/interests': <PublishedContent kind="interests" />,
   };
   const page = pages.find(item => item.path === path);
   useEffect(() => {
-    document.title = page ? `${page.label} — Het Shah` : 'Page not found — Het Shah';
+    document.title = page ? `${page.label} — Het Shah` : ['/photos','/blog','/interests'].includes(path) ? `${path.slice(1)} — Het Shah` : 'Page not found — Het Shah';
   }, [page]);
   return (
     <div className="App">

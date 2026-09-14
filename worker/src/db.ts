@@ -89,6 +89,7 @@ export async function listTestimonials(db: D1Database) {
     .prepare(
       `SELECT id AS _id, name, role, avatar, text
          FROM testimonials
+        WHERE id NOT IN (SELECT testimonial_id FROM legacy_review_state WHERE hidden=1)
         ORDER BY position, name`
     )
     .all<TestimonialRow>();
