@@ -1,4 +1,4 @@
-# Portfolio — hetshah.xyz
+# Portfolio — hetshah.me
 
 ## Personal site and community reviews
 

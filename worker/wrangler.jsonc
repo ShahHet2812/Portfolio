@@ -21,9 +21,9 @@
   ],
 
   "vars": {
-    "SITE_NAME": "hetshah.xyz",
+    "SITE_NAME": "hetshah.me",
     "NOTIFY_EMAIL": "shahhet28122004@gmail.com",
-    "MAIL_FROM": "Portfolio <noreply@hetshah.xyz>"
+    "MAIL_FROM": "Portfolio <noreply@hetshah.me>"
   },
 
   "observability": {

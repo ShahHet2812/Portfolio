@@ -97,7 +97,7 @@ function buildText({ name, email, message, receivedAt }: ContactPayload, siteNam
 export async function sendContactNotification(env: MailEnv, payload: ContactPayload): Promise<MailResult> {
   if (!env.RESEND_API_KEY) return { sent: false, reason: 'RESEND_API_KEY not configured' };
 
-  const siteName = env.SITE_NAME || 'hetshah.xyz';
+  const siteName = env.SITE_NAME || 'hetshah.me';
   const to = env.NOTIFY_EMAIL || 'shahhet28122004@gmail.com';
   // Must be an address on a domain verified in Resend.
   const from = env.MAIL_FROM || `Portfolio <noreply@${siteName}>`;

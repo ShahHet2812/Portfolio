@@ -38,11 +38,11 @@ routes.post('/submit', bodyLimit({ maxSize: 400_000, onError: c => c.json({ erro
     .bind(id,data.name,data.email,data.role,data.company,data.experience,data.relationship,data.message,bytes,type,await hash(token),now + 30*86400000,ip,now,ip,now-86400000).run();
   if (!inserted.meta.changes) return c.json({ error: 'Submission limit reached. Please try again tomorrow.' }, 429);
   // Fixed production origin avoids trusting request headers for approval links.
-  const url = `https://hetshah.xyz/api/reviews/review/${token}`;
+  const url = `https://${c.env.SITE_NAME || 'hetshah.me'}/api/reviews/review/${token}`;
   try {
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST', headers: { Authorization: `Bearer ${c.env.RESEND_API_KEY}`, 'Content-Type': 'application/json', 'Idempotency-Key': `review-${id}` },
-      body: JSON.stringify({ from: c.env.MAIL_FROM || 'Het Shah <noreply@hetshah.xyz>', to: [c.env.NOTIFY_EMAIL || 'shahhet28122004@gmail.com'], subject: `Review testimonial from ${data.name}`, text: `${data.name}\n${data.role} at ${data.company}\n${data.email}\n\nExperience: ${data.experience}\nRelationship: ${data.relationship}\n\n${data.message}\n\nReview photo and approve or reject (expires in 30 days):\n${url}` }),
+      body: JSON.stringify({ from: c.env.MAIL_FROM || 'Het Shah <noreply@hetshah.me>', to: [c.env.NOTIFY_EMAIL || 'shahhet28122004@gmail.com'], subject: `Review testimonial from ${data.name}`, text: `${data.name}\n${data.role} at ${data.company}\n${data.email}\n\nExperience: ${data.experience}\nRelationship: ${data.relationship}\n\n${data.message}\n\nReview photo and approve or reject (expires in 30 days):\n${url}` }),
       signal: AbortSignal.timeout(8000),
     });
     if (!response.ok) throw new Error(`Email provider status ${response.status}`);

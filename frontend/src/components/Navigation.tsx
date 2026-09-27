@@ -10,7 +10,7 @@ export default function Navigation() {
       <Container>
         <Navbar.Brand href="/" className="nav-brand">
           <Terminal size={17} className="t-green" />
-          <span>het<span className="host">@</span>hetshah.xyz<span className="path">:~$</span></span>
+          <span>het<span className="host">@</span>hetshah.me<span className="path">:~$</span></span>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbar-nav" aria-label="Toggle navigation" className="nav-toggle">
           {expanded ? <X size={20} /> : <Menu size={20} />}

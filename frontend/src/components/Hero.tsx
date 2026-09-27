@@ -80,7 +80,7 @@ const Hero: React.FC = () => {
                   <span className="win__dot win__dot--y" />
                   <span className="win__dot win__dot--g" />
                 </div>
-                <span className="win__title">het@hetshah.xyz: ~/portfolio</span>
+                <span className="win__title">het@hetshah.me: ~/portfolio</span>
                 <span className="win__meta">zsh</span>
               </div>
 
