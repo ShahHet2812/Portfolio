@@ -28,6 +28,10 @@ test('testimonial moderation, privacy, validation and abuse controls', async () 
       };
     };
     const env={DB:{prepare:adapt},RESEND_API_KEY:'local-test-only',ASSETS:{fetch:()=>new Response('site')}};
+    const security=await app.request('https://hetshah.me/.well-known/security.txt',{},env);
+    assert.equal(security.status,200);
+    assert.match(await security.text(),/Canonical: https:\/\/hetshah\.me\/\.well-known\/security\.txt/);
+    assert.equal(security.headers.get('Strict-Transport-Security'),'max-age=86400');
     const mails=[];
     globalThis.fetch=async (_url,init)=>{mails.push(JSON.parse(init.body));return new Response('{}');};
     const send = async (overrides={}, ip='test') => {

@@ -20,6 +20,13 @@ export interface Env extends MailEnv {
 
 const app = new Hono<{ Bindings: Env }>();
 
+app.use('*', async (c, next) => {
+  await next();
+  // Start with a one-day policy while the new domain settles. This protects
+  // against HTTPS downgrade attacks without creating a long-lived lock-in.
+  c.header('Strict-Transport-Security', 'max-age=86400');
+});
+
 // Keep one canonical hostname. This also prevents the imported `www` DNS
 // record from falling through to an origin server that no longer exists.
 app.use('*', async (c, next) => {
@@ -29,6 +36,18 @@ app.use('*', async (c, next) => {
     return c.redirect(url.toString(), 308);
   }
   await next();
+});
+
+app.get('/.well-known/security.txt', (c) => {
+  c.header('Content-Type', 'text/plain; charset=utf-8');
+  c.header('Cache-Control', 'public, max-age=86400');
+  return c.body([
+    'Contact: mailto:shahhet28122004@gmail.com',
+    'Canonical: https://hetshah.me/.well-known/security.txt',
+    'Preferred-Languages: en',
+    'Expires: 2027-09-27T00:00:00Z',
+    '',
+  ].join('\n'));
 });
 
 // The site and API share an origin, so CORS only matters if something external
