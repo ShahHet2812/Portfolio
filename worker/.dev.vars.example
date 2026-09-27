@@ -4,3 +4,7 @@
 #   wrangler secret put RESEND_API_KEY
 
 RESEND_API_KEY=re_your_key_here
+ACCESS_TEAM_DOMAIN=your-team.cloudflareaccess.com
+ACCESS_AUD=your-access-application-aud-tag
+ADMIN_EMAIL=shahhet28122004@gmail.com
+ADMIN_MODERATION_ENABLED=false

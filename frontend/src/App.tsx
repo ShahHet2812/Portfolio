@@ -11,9 +11,12 @@ import Hackathons from './components/Hackathons';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import { currentPath, pages } from './lib/pages';
+import AdminDashboard from './components/AdminDashboard';
+import { Lab, Journal, PhotoStories, Interests, Now, Certifications, EntryPage, NotFound } from './components/ContentPages';
 
 function App() {
   const path = currentPath();
+  if (window.location.hostname === 'admin.hetshah.me') return <AdminDashboard />;
   const content: Record<string, ReactNode> = {
     '/': <Hero />,
     '/experience': <Experience />,
@@ -22,7 +25,17 @@ function App() {
     '/testimonials': <Testimonials />,
     '/hackathons': <Hackathons />,
     '/contact': <Contact />,
+    '/lab': <Lab />,
+    '/lab/certifications': <Certifications />,
+    '/journal': <Journal />,
+    '/journal/photos': <PhotoStories />,
+    '/journal/interests': <Interests />,
+    '/journal/now': <Now />,
   };
+  const labSlug=/^\/lab\/([^/]+)$/.exec(path)?.[1];
+  const postSlug=/^\/journal\/posts\/([^/]+)$/.exec(path)?.[1];
+  const photoSlug=/^\/journal\/photos\/([^/]+)$/.exec(path)?.[1];
+  const dynamic = labSlug&&labSlug!=='certifications'?<EntryPage kind="lab" slug={labSlug}/>:postSlug?<EntryPage kind="journal_post" slug={postSlug}/>:photoSlug?<EntryPage kind="photo_story" slug={photoSlug}/>:null;
   const page = pages.find(item => item.path === path);
   useEffect(() => {
     document.title = page ? `${page.label} — Het Shah` : 'Page not found — Het Shah';
@@ -31,7 +44,7 @@ function App() {
     <div className="App">
       <Navigation />
       <main className={path === '/' ? 'home-page' : 'inner-page'}>
-        {content[path] || <section className="section"><div className="container"><h1>Page not found</h1><p>That path doesn’t exist here.</p><a className="btn-term" href="/">Return home</a></div></section>}
+        {content[path] || dynamic || <NotFound />}
       </main>
       <Footer />
     </div>

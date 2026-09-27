@@ -85,13 +85,16 @@ export async function listProjects(db: D1Database) {
 }
 
 export async function listTestimonials(db: D1Database) {
-  const { results } = await db
-    .prepare(
-      `SELECT id AS _id, name, role, avatar, text
-         FROM testimonials
-        ORDER BY position, name`
-    )
-    .all<TestimonialRow>();
+  let results: TestimonialRow[];
+  try {
+    ({ results } = await db.prepare(
+      `SELECT t.id AS _id, t.name, t.role, t.avatar, t.text FROM testimonials t
+       LEFT JOIN legacy_testimonial_visibility v ON v.testimonial_id=t.id
+       WHERE COALESCE(v.hidden,0)=0 ORDER BY t.position,t.name`
+    ).all<TestimonialRow>());
+  } catch {
+    ({ results } = await db.prepare(`SELECT id AS _id,name,role,avatar,text FROM testimonials ORDER BY position,name`).all<TestimonialRow>());
+  }
   const approved = await db.prepare(`SELECT id AS _id,name,role,company,experience,relationship,
     '/api/reviews/photo/' || id AS avatar,message AS text FROM testimonial_submissions
     WHERE status='approved' ORDER BY created_at DESC`).all();

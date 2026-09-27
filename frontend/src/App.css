@@ -1204,3 +1204,46 @@ textarea.form-control {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Published Lab and Journal content */
+.content-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:18px; }
+.content-card,.metric,.admin-list article,.preview { border:1px solid var(--border); background:var(--surface); border-radius:var(--radius); padding:22px; }
+.content-card h2 { font-size:1.15rem; margin:8px 0 12px; }
+.content-card h2 a { color:var(--text); }
+.tag-row,.filter-row,.entry-links { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0; }
+.tag-row span,.filter-row button { font:0.75rem var(--mono); color:var(--cyan); border:1px solid var(--border); background:var(--surface-2); border-radius:4px; padding:4px 8px; }
+.filter-row button.active { border-color:var(--green); color:var(--green); }
+.article-wrap { max-width:850px; }
+.markdown { color:var(--text-dim); font:1rem/1.8 var(--sans); overflow-wrap:anywhere; }
+.markdown h2,.markdown h3 { color:var(--text); margin-top:2em; }
+.markdown pre { overflow:auto; background:#080c12; border:1px solid var(--border); padding:16px; border-radius:6px; }
+.markdown table { display:block; max-width:100%; overflow:auto; border-collapse:collapse; }
+.markdown th,.markdown td { border:1px solid var(--border); padding:8px 12px; }
+.media-gallery { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin:28px 0; }
+.media-gallery img { width:100%; height:auto; border-radius:6px; border:1px solid var(--border); }
+.media-gallery figcaption { color:var(--text-faint); font:0.75rem var(--mono); margin-top:6px; }
+.nav-more .dropdown-menu { background:var(--surface-2); border-color:var(--border); }
+.nav-more .dropdown-item { color:var(--text-dim); font:0.8rem var(--mono); }
+.nav-more .dropdown-item:hover { background:var(--surface-3); color:var(--green); }
+
+/* Access-protected owner dashboard */
+.admin-shell { min-height:100vh; display:grid; grid-template-columns:245px 1fr; background:var(--bg); color:var(--text); }
+.admin-shell>aside { position:sticky; top:0; height:100vh; border-right:1px solid var(--border); padding:24px 16px; background:var(--surface); overflow:auto; }
+.admin-shell>aside nav { display:grid; gap:4px; margin-top:30px; }
+.admin-shell>aside button,.admin-actions button,.admin-list.compact button { text-align:left; border:1px solid transparent; background:transparent; color:var(--text-dim); border-radius:5px; padding:9px 11px; font:0.78rem var(--mono); text-transform:capitalize; }
+.admin-shell>aside button.active,.admin-shell>aside button:hover { color:var(--green); border-color:var(--border); background:var(--surface-2); }
+.admin-shell>main { padding:42px clamp(20px,5vw,70px); min-width:0; }
+.admin-shell header { margin-bottom:28px; }
+.admin-shell h1 { text-transform:capitalize; }
+.metric-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; }
+.metric { display:grid; gap:5px; }.metric strong{font:2rem var(--mono);color:var(--green)}.metric span{color:var(--text-dim)}
+.admin-list { display:grid; gap:12px; }.admin-list article h2{font-size:1rem}.admin-list .pre{white-space:pre-wrap}.admin-actions{display:flex;flex-wrap:wrap;gap:5px}
+.admin-thumb { width:88px; height:88px; object-fit:cover; border-radius:6px; border:1px solid var(--border); }
+.admin-list.compact button { display:flex; justify-content:space-between; gap:15px; border-color:var(--border); margin:7px 0; width:100%; }
+.editor-layout { display:grid; grid-template-columns:minmax(220px,0.7fr) minmax(360px,2fr); gap:28px; }
+.editor { display:grid; gap:14px; }.editor label{display:grid;gap:6px;color:var(--text-dim);font:0.78rem var(--mono)}
+.editor input,.editor textarea,.editor select { width:100%; color:var(--text); background:#090d13; border:1px solid var(--border); border-radius:5px; padding:10px; }
+.media-order-row { display:grid; grid-template-columns:minmax(150px,.7fr) 1fr 1fr; gap:8px; align-items:center; padding:8px 0; border-bottom:1px solid var(--border); }
+.editor textarea { min-height:90px; }.editor .code-input{min-height:320px;font-family:var(--mono);line-height:1.6}.admin-error{color:#ff997e}.preview{min-height:100px}
+.admin-warning { color:#ffd27d; border-left:2px solid #ffd27d; padding-left:10px; font-size:.82rem; }
+@media(max-width:800px){.admin-shell{display:block}.admin-shell>aside{position:static;height:auto;border-right:0;border-bottom:1px solid var(--border)}.admin-shell>aside nav{grid-template-columns:repeat(2,1fr)}.editor-layout{grid-template-columns:1fr}.admin-shell>main{padding:28px 16px}}

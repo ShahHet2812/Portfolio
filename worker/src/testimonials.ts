@@ -38,7 +38,10 @@ routes.post('/submit', bodyLimit({ maxSize: 400_000, onError: c => c.json({ erro
     .bind(id,data.name,data.email,data.role,data.company,data.experience,data.relationship,data.message,bytes,type,await hash(token),now + 30*86400000,ip,now,ip,now-86400000).run();
   if (!inserted.meta.changes) return c.json({ error: 'Submission limit reached. Please try again tomorrow.' }, 429);
   // Fixed production origin avoids trusting request headers for approval links.
-  const url = `https://${c.env.SITE_NAME || 'hetshah.me'}/api/reviews/review/${token}`;
+  const dashboardModeration = c.env.ADMIN_MODERATION_ENABLED === 'true';
+  const url = dashboardModeration
+    ? `https://admin.hetshah.me/testimonials?id=${encodeURIComponent(id)}`
+    : `https://${c.env.SITE_NAME || 'hetshah.me'}/api/reviews/review/${token}`;
   try {
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST', headers: { Authorization: `Bearer ${c.env.RESEND_API_KEY}`, 'Content-Type': 'application/json', 'Idempotency-Key': `review-${id}` },
@@ -63,6 +66,7 @@ routes.get('/photo/:id', async c => {
 });
 
 routes.get('/review/:token', async c => {
+  if (c.env.ADMIN_MODERATION_ENABLED === 'true') return c.text('Testimonial moderation has moved to the private owner dashboard.', 410);
   const token = c.req.param('token');
   const row = await c.env.DB.prepare('SELECT * FROM testimonial_submissions WHERE token_hash=? AND expires_at>?').bind(await hash(token),Date.now()).first<Submission>();
   if (!row) return c.text('This review link is invalid or expired.', 404);
@@ -71,6 +75,7 @@ routes.get('/review/:token', async c => {
   return c.html(`<!doctype html><html><meta name="viewport" content="width=device-width"><title>Review testimonial</title><body style="max-width:700px;margin:40px auto;padding:24px;font:17px/1.7 system-ui;background:#0a0e14;color:#e8eef5"><h1>Review testimonial</h1><p>Your email address and this review link are private. Approval publishes the name, role, company, work experience, relationship, photo and message.</p><img width="120" alt="Submitted portrait" src="/api/reviews/photo/${row.id}?token=${token}"><div style="white-space:pre-wrap;overflow-wrap:anywhere">${details}</div>${row.status === 'pending' ? '<form method="post"><button name="decision" value="approved">Approve and publish</button> <button name="decision" value="rejected">Reject</button></form>' : `<p>Already ${escape(row.status)}.</p>`}</body></html>`);
 });
 routes.post('/review/:token', async c => {
+  if (c.env.ADMIN_MODERATION_ENABLED === 'true') return c.text('Testimonial moderation has moved to the private owner dashboard.', 410);
   const origin = c.req.header('Origin');
   const fetchSite = c.req.header('Sec-Fetch-Site');
   const requestOrigin = new URL(c.req.url).origin;

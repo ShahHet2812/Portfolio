@@ -1,5 +1,7 @@
 import { Hono } from 'hono';
 import testimonialRoutes from './testimonials';
+import contentRoutes from './content';
+import adminRoutes from './admin';
 import { cors } from 'hono/cors';
 import {
   countRecentContacts,
@@ -15,10 +17,25 @@ import { sendContactNotification, type MailEnv } from './mail';
 export interface Env extends MailEnv {
   DB: D1Database;
   ASSETS: Fetcher;
+  MEDIA?: R2Bucket;
   ALLOWED_ORIGINS?: string;
+  ACCESS_TEAM_DOMAIN?: string;
+  ACCESS_AUD?: string;
+  ADMIN_EMAIL?: string;
+  ADMIN_MODERATION_ENABLED?: string;
 }
 
 const app = new Hono<{ Bindings: Env }>();
+
+// The owner interface exists only on its dedicated Access-protected hostname.
+// The admin router validates Cloudflare's signed identity before serving even
+// the application shell, and returns 404 on every other hostname.
+app.use('*', async (c, next) => {
+  if (new URL(c.req.url).hostname === 'admin.hetshah.me') {
+    return adminRoutes.fetch(c.req.raw, c.env);
+  }
+  await next();
+});
 
 app.use('*', async (c, next) => {
   await next();
@@ -84,6 +101,28 @@ app.get('/api/projects', listRoute('projects', listProjects));
 app.get('/api/testimonials', listRoute('testimonials', listTestimonials));
 app.get('/api/hackathons', listRoute('hackathons', listHackathons));
 app.get('/api/experience', listRoute('experience', listExperience));
+app.route('/api', contentRoutes);
+
+const xml = (value: string) => value.replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&apos;'}[c]!));
+app.get('/feed/:section.xml', async c => {
+  const section=c.req.param('section') || '';
+  if(!['lab','journal'].includes(section)) return c.notFound();
+  const visibility=await c.env.DB.prepare('SELECT enabled FROM site_sections WHERE name=?').bind(section).first<{enabled:number}>();
+  if(!visibility?.enabled)return c.notFound();
+  const kinds=section==='lab'?['lab']:['journal_post','photo_story'];
+  const placeholders=kinds.map(()=>'?').join(',');
+  const {results}=await c.env.DB.prepare(`SELECT title,slug,summary,kind,published_at publishedAt FROM content_entries WHERE status='published' AND kind IN (${placeholders}) ORDER BY published_at DESC LIMIT 50`).bind(...kinds).all<any>();
+  const items=results.map((r:any)=>{const path=r.kind==='lab'?`/lab/${r.slug}`:r.kind==='photo_story'?`/journal/photos/${r.slug}`:`/journal/posts/${r.slug}`;return `<item><title>${xml(r.title)}</title><link>https://hetshah.me${path}</link><guid>https://hetshah.me${path}</guid><description>${xml(r.summary)}</description><pubDate>${new Date(r.publishedAt).toUTCString()}</pubDate></item>`}).join('');
+  c.header('Content-Type','application/rss+xml; charset=utf-8'); return c.body(`<?xml version="1.0"?><rss version="2.0"><channel><title>Het Shah — ${section}</title><link>https://hetshah.me/${section}</link><description>${section==='lab'?'Security and network learning notes':'Essays, notes and photo stories'}</description>${items}</channel></rss>`);
+});
+app.get('/sitemap.xml', async c => {
+  const fixed=['','experience','projects','resume','testimonials','hackathons','contact'];
+  let dynamic:string[]=[];
+  try { const {results}=await c.env.DB.prepare(`SELECT e.kind,e.slug FROM content_entries e JOIN site_sections s ON s.name=CASE WHEN e.kind='lab' THEN 'lab' ELSE 'journal' END WHERE e.status='published' AND s.enabled=1`).all<any>();
+    dynamic=results.map((r:any)=>r.kind==='lab'?`lab/${r.slug}`:r.kind==='photo_story'?`journal/photos/${r.slug}`:r.kind==='journal_post'?`journal/posts/${r.slug}`:r.kind==='interest'?'journal/interests':'journal/now'); } catch {}
+  const urls=[...new Set([...fixed,...dynamic])].map(path=>`<url><loc>https://hetshah.me/${xml(path)}</loc></url>`).join('');
+  c.header('Content-Type','application/xml; charset=utf-8'); return c.body(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}</urlset>`);
+});
 
 // ------------------------------------------------------------------ contact
 
@@ -174,6 +213,7 @@ app.post('/api/contact/add', async (c) => {
 
 app.route('/api/reviews', testimonialRoutes);
 app.all('/api/*', (c) => c.json({ error: 'Not found.' }, 404));
+app.all('/admin*', c => c.notFound());
 
 // Everything else is the React app, served from the static assets binding.
 app.get('*', (c) => c.env.ASSETS.fetch(c.req.raw));
