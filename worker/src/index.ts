@@ -20,6 +20,17 @@ export interface Env extends MailEnv {
 
 const app = new Hono<{ Bindings: Env }>();
 
+// Keep one canonical hostname. This also prevents the imported `www` DNS
+// record from falling through to an origin server that no longer exists.
+app.use('*', async (c, next) => {
+  const url = new URL(c.req.url);
+  if (url.hostname === 'www.hetshah.me') {
+    url.hostname = 'hetshah.me';
+    return c.redirect(url.toString(), 308);
+  }
+  await next();
+});
+
 // The site and API share an origin, so CORS only matters if something external
 // calls the API. Left open unless ALLOWED_ORIGINS is set.
 app.use('/api/*', async (c, next) => {
