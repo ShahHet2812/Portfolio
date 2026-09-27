@@ -12,6 +12,11 @@
     "not_found_handling": "single-page-application"
   },
 
+  "routes": [
+    { "pattern": "hetshah.me", "custom_domain": true },
+    { "pattern": "hetshah.xyz", "custom_domain": true }
+  ],
+
   "d1_databases": [
     {
       "binding": "DB",
