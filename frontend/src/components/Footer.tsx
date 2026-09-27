@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
-import { GitBranch, Github, Linkedin, Twitter, ArrowUp } from 'lucide-react';
+import { GitBranch, Github, Instagram, Linkedin, Twitter, ArrowUp } from 'lucide-react';
 
 const Footer: React.FC = () => (
   <footer className="statusbar">
@@ -30,6 +30,14 @@ const Footer: React.FC = () => (
           </a>
           <a href="https://x.com/SHAHHet94920284" target="_blank" rel="noopener noreferrer" aria-label="X / Twitter">
             <Twitter size={15} />
+          </a>
+          <a
+            href="https://www.instagram.com/het._.shah._/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+          >
+            <Instagram size={15} />
           </a>
           <a href="/" className="statusbar__item">
             <ArrowUp size={13} />

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form } from 'react-bootstrap';
-import { Mail, Phone, MapPin, Github, Linkedin, Twitter, Send, Check, AlertTriangle } from 'lucide-react';
+import { Mail, Phone, MapPin, Github, Instagram, Linkedin, Twitter, Send, Check, AlertTriangle } from 'lucide-react';
 import axios from 'axios';
 import SectionHeading from './SectionHeading';
 import Reveal from './motion/Reveal';
@@ -234,6 +234,15 @@ const Contact: React.FC = () => {
                       aria-label="X / Twitter"
                     >
                       <Twitter size={18} />
+                    </a>
+                    <a
+                      href="https://www.instagram.com/het._.shah._/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="icon-link"
+                      aria-label="Instagram"
+                    >
+                      <Instagram size={18} />
                     </a>
                   </div>
                 </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { Github, Linkedin, Mail, ArrowRight } from 'lucide-react';
+import { Github, Instagram, Linkedin, Mail, ArrowRight } from 'lucide-react';
 import InteractiveTerminal from './InteractiveTerminal';
 
 // ~500KB of three.js, so it loads after the page is interactive and only on
@@ -139,6 +139,15 @@ const Hero: React.FC = () => {
                   </a>
                   <a href="mailto:work.hetshah28@gmail.com" className="icon-link" aria-label="Email">
                     <Mail size={18} />
+                  </a>
+                  <a
+                    href="https://www.instagram.com/het._.shah._/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="icon-link"
+                    aria-label="Instagram"
+                  >
+                    <Instagram size={18} />
                   </a>
                 </div>
               </div>
