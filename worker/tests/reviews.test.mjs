@@ -51,6 +51,11 @@ test('testimonial moderation, privacy, validation and abuse controls', async () 
     assert.equal(sql.prepare('SELECT status FROM testimonial_submissions').get().status,'pending');
     assert.equal((await app.request(`/api/reviews/photo/${row.id}?token=${token}`,{},env)).status,200);
     const decide=decision=>app.request(`/api/reviews/review/${token}`,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:`decision=${decision}`},env);
+    const nullOrigin=await app.request(`/api/reviews/review/${token}`,{method:'POST',headers:{Origin:'null','Sec-Fetch-Site':'same-origin','Content-Type':'application/x-www-form-urlencoded'},body:'decision=invalid'},env);
+    assert.equal(nullOrigin.status,400);
+    const crossSite=await app.request(`/api/reviews/review/${token}`,{method:'POST',headers:{Origin:'null','Sec-Fetch-Site':'cross-site','Content-Type':'application/x-www-form-urlencoded'},body:'decision=approved'},env);
+    assert.equal(crossSite.status,403);
+    assert.equal(sql.prepare('SELECT status FROM testimonial_submissions').get().status,'pending');
     await decide('approved');
     const publicRows=await (await app.request('/api/testimonials',{},env)).json();
     assert.equal(publicRows.length,1); assert.equal(publicRows[0].email,undefined);assert.equal(publicRows[0].token_hash,undefined);

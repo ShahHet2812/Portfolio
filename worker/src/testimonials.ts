@@ -72,7 +72,15 @@ routes.get('/review/:token', async c => {
 });
 routes.post('/review/:token', async c => {
   const origin = c.req.header('Origin');
-  if (origin && origin !== new URL(c.req.url).origin) return c.text('Invalid origin.',403);
+  const fetchSite = c.req.header('Sec-Fetch-Site');
+  const requestOrigin = new URL(c.req.url).origin;
+  // Privacy-focused browsers can serialize a same-origin form POST as
+  // `Origin: null` when the review page uses a no-referrer policy. In that
+  // case, Sec-Fetch-Site still proves that the navigation began on this page.
+  const sameOrigin = origin === requestOrigin ||
+    (origin === 'null' && fetchSite === 'same-origin') ||
+    (!origin && (!fetchSite || fetchSite === 'same-origin' || fetchSite === 'none'));
+  if (!sameOrigin) return c.text('Invalid origin.',403);
   const body = await c.req.parseBody();
   if (body.decision !== 'approved' && body.decision !== 'rejected') return c.text('Invalid decision.',400);
   const result = await c.env.DB.prepare("UPDATE testimonial_submissions SET status=? WHERE token_hash=? AND expires_at>? AND status='pending'")
