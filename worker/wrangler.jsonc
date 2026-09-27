@@ -14,7 +14,7 @@
 
   "routes": [
     { "pattern": "hetshah.me", "custom_domain": true },
-    { "pattern": "www.hetshah.me", "custom_domain": true },
+    { "pattern": "www.hetshah.me/*", "zone_name": "hetshah.me" },
     { "pattern": "hetshah.xyz", "custom_domain": true }
   ],
 
