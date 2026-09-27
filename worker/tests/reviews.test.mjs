@@ -43,6 +43,7 @@ test('testimonial moderation, privacy, validation and abuse controls', async () 
     assert.equal(row.status,'pending'); assert.equal(row.notified,1);
     assert.deepEqual(await (await app.request('/api/testimonials',{},env)).json(),[]);
     assert.equal((await app.request(`/api/reviews/photo/${row.id}`,{},env)).status,404);
+    assert.match(mails[0].text, /https:\/\/hetshah\.me\/api\/reviews\/review\//);
     const token=mails[0].text.match(/review\/([^\s]+)/)[1];
     assert.notEqual(token,row.token_hash);
     const preview=await app.request(`/api/reviews/review/${token}`,{},env);
