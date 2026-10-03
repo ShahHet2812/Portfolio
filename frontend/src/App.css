@@ -1222,9 +1222,47 @@ textarea.form-control {
 .media-gallery { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin:28px 0; }
 .media-gallery img { width:100%; height:auto; border-radius:6px; border:1px solid var(--border); }
 .media-gallery figcaption { color:var(--text-faint); font:0.75rem var(--mono); margin-top:6px; }
-.nav-more .dropdown-menu { background:var(--surface-2); border-color:var(--border); }
-.nav-more .dropdown-item { color:var(--text-dim); font:0.8rem var(--mono); }
-.nav-more .dropdown-item:hover { background:var(--surface-3); color:var(--green); }
+.nav-shell .nav-more > .dropdown-toggle {
+  color: var(--text-dim);
+  font: 0.8125rem var(--mono);
+  padding: 6px 10px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+}
+.nav-shell .nav-more > .dropdown-toggle:hover,
+.nav-shell .nav-more > .dropdown-toggle:focus,
+.nav-shell .nav-more.show > .dropdown-toggle,
+.nav-shell .nav-more > .dropdown-toggle.active {
+  color: var(--text-strong);
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+}
+.nav-shell .nav-more > .dropdown-toggle::after { color: var(--text-faint); }
+.nav-shell .nav-more .dropdown-menu {
+  min-width: 165px;
+  margin-top: 8px;
+  padding: 6px;
+  background: #141b25;
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.42);
+}
+.nav-shell .nav-more .dropdown-item {
+  color: var(--text-dim);
+  background: transparent;
+  border-radius: 5px;
+  padding: 8px 10px;
+  font: 0.8rem var(--mono);
+}
+.nav-shell .nav-more .dropdown-item:hover,
+.nav-shell .nav-more .dropdown-item:focus,
+.nav-shell .nav-more .dropdown-item.active {
+  color: var(--green);
+  background: var(--surface-3);
+}
+@media (max-width: 1399.98px) {
+  .nav-shell .nav-more > .dropdown-toggle { padding: 9px 10px; }
+  .nav-shell .nav-more .dropdown-menu { margin: 4px 0 8px; box-shadow: none; }
+}
 
 /* Access-protected owner dashboard */
 .admin-shell { min-height:100vh; display:grid; grid-template-columns:245px 1fr; background:var(--bg); color:var(--text); }

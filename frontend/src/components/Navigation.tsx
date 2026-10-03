@@ -28,7 +28,8 @@ export default function Navigation() {
                 {page.label}
               </Nav.Link>
             ))}
-            <NavDropdown title="More" id="more-navigation" className="nav-more">
+            <NavDropdown title="More" id="more-navigation" className="nav-more"
+              active={more.some(page => currentPath() === page.path)}>
               {more.map(page=><NavDropdown.Item key={page.path} href={page.path}>{page.label}</NavDropdown.Item>)}
             </NavDropdown>
           </Nav>
